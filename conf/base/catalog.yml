@@ -10,4 +10,17 @@ hops:
 
 hops_dump:
   type: pandas.CSVDataSet
-  filepath: data/01_raw/hops.csve
+  filepath: data/01_raw/hops.csv
+
+mesh-kettle:
+  credentials: rif_influx_credentials
+  query:
+    'from(bucket: "WeLoveBeer") 
+    |> range(start: -60m) 
+    |> filter(fn: (r) => r["_measurement"] == "Mash-Kettle") 
+    |> filter(fn: (r) => r["_field"] == "MashKettle_Temp") 
+    |> filter(fn: (r) => r["location"] == "dortmund") 
+    |> aggregateWindow(every: 15m, fn: last, createEmpty: false) 
+    |> yield(name: "last")'
+  type:
+    influx.InfluxQueryDataset
