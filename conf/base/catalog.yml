@@ -12,7 +12,7 @@ hops_dump:
   type: pandas.CSVDataSet
   filepath: data/01_raw/hops.csv
 
-mesh-kettle:
+mash-kettle:
   credentials: rif_influx_credentials
   query:
     'from(bucket: "WeLoveBeer") 
